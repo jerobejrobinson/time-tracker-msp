@@ -1,8 +1,10 @@
 import supabase from "../config/supabaseClient";
 export default function SignOut() {
     return (
-        <div>
-            
-        </div>
+        <button onClick={async () => {
+            await supabase.auth.signOut()
+        }}>
+            Sign Outd
+        </button>
     )
 }

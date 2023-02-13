@@ -1,19 +1,20 @@
-import useFetchTasks from "../hooks/useFetchTasks";
-import useHtmlLoader from "../hooks/useHtmlLoader";
 import SessionContext from "../lib/session";
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const Home = () => {
   const session = useContext(SessionContext);
 
-  if(!session.data) {
+  if(!session || !session.session) {
     return (
-      <Navigate to="/login" />
+      <div className="page protected">
+        <p>This page is protected. Login to continue.</p>
+        <Link to="/login">Login Page</Link>
+      </div>
     )
   }
   return (
     <div className="page home">
-      <h2>Current Tasks</h2>
+      <h2>Msp Time Tracker</h2>
       
     </div>
   )

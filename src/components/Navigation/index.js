@@ -5,20 +5,14 @@ import SessionContext from '../../lib/session'
 import { Link } from 'react-router-dom'
 import SignOut from '../UserUtils/SignOut'
 export default function Navigation() {
-    const {session, setSession} = useContext(SessionContext)
-    // const session = useContext(SessionContext)
-    // console.log(session)
-    useEffect(() => {
-        console.log('session navigation:')
-        console.log(session)
-    })
+    const session = useContext(SessionContext)
     return (
         <nav>
           <h1>MSP Time Tracker</h1>
           <Link to="/">Home</Link>
           <Link to="/create">Create Task</Link>
-          {!session && (<Link to="/login">Login</Link>)}
-          {session && session.data.session && (<SignOut />)}
+          {!session || !session.session && (<Link to="/login">Login</Link>)}
+          {session && session.session && (<SignOut />)}
         </nav>
     )
 }

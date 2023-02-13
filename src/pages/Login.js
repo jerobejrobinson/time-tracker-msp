@@ -4,10 +4,10 @@ import { Navigate } from 'react-router-dom';
 import SessionContext from '../lib/session';
 
 export default function Login() {
-    const session = useContext(SessionContext)
+    const session = useContext(SessionContext);
+    const [ localSession, setLocalSession ] = useState(null)
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-    // console.log(session)
     const handleLogin = async (e) => {
         e.preventDefault()
         console.log(password)
@@ -16,20 +16,12 @@ export default function Login() {
             email: email,
             password: password,
         })
+        // Toast notifaction of error
         if(error) {
-            return {data: null, error: error.message}
-        }
-        if(data) {
-            return {data: data, error: null}
+            console.log(error)
+            return;
         }
     }
-    console.log(session)
-    if(session && session.data.session && session.data.session.user.user_metadata.authLevel === process.env.REACT_APP_MSP_LEVEL ) {
-        return (
-            <Navigate to="/" />
-        )
-    }
-
     return (
         <div className="page login">
             <form onSubmit={async (e) => handleLogin(e)}>
