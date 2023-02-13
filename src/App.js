@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
 import SessionProvider from "./lib/session/Provider"
+import Navigation from "./components/Navigation"
 
 // pages
 import Home from "./pages/Home"
@@ -16,11 +17,7 @@ function App() {
   return (
     <BrowserRouter>
       <SessionProvider>
-        <nav>
-          <h1>MSP Time Tracker</h1>
-          <Link to="/">Home</Link>
-          <Link to="/create">Create Task</Link>
-        </nav>
+        <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/create" element={<Create />} />

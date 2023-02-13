@@ -2,11 +2,12 @@ import supabase from '../config/supabaseClient';
 import { useState, useContext} from 'react';
 import { Navigate } from 'react-router-dom';
 import SessionContext from '../lib/session';
+
 export default function Login() {
     const session = useContext(SessionContext)
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
-
+    // console.log(session)
     const handleLogin = async (e) => {
         e.preventDefault()
         console.log(password)
@@ -22,8 +23,8 @@ export default function Login() {
             return {data: data, error: null}
         }
     }
-
-    if(session && session.data) {
+    console.log(session)
+    if(session && session.data.session && session.data.session.user.user_metadata.authLevel === process.env.REACT_APP_MSP_LEVEL ) {
         return (
             <Navigate to="/" />
         )
@@ -31,7 +32,7 @@ export default function Login() {
 
     return (
         <div className="page login">
-            <form onSubmit={(e) => session.setSession(handleLogin(e))}>
+            <form onSubmit={async (e) => handleLogin(e)}>
                 <div>
                     <label htmlFor="emailInput">Email:</label>
                     <input type="text" htmlFor="emailInput" id="emailInput" onChange={(e) => setEmail(e.target.value)}/>

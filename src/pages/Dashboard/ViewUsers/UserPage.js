@@ -7,7 +7,6 @@ export default function UserPage() {
     const {id} = useParams()
     const {data, error} = useFetchUserById(id);
 
-    // if()
     return (
         <div className="page userPage">
             {data && (

@@ -1,38 +1,10 @@
 import supabase from "../config/supabaseClient";
-import { useState, useEffect, useContext } from 'react';
-import { useNavigate } from "react-router-dom";
-import SessionContext from "../lib/session";
+import { useState } from 'react';
+
 export default function SignUp() {
-    const session = useContext(SessionContext)
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const [passwordVerify, setPasswordVerify] = useState(null);
-    // const [session, setSession] = useState(null);
-    // const navigate = useNavigate();
-    // useEffect(() => {
-    //     const getSession = async () => {
-    //         const { data, error } = await supabase.auth.getSession();
-    //         if(error) {
-    //             console.log(error.message);
-    //             return ;
-    //         }
-    //         if(data) {                
-    //             return {data: data, error: null};
-    //         }
-    //     }
-    //     getSession().then(res => {
-    //         if(res.data) {
-    //             navigate('/dashboard')
-    //         }
-    //     })
-    // }, [])
-
-    // useEffect(() => {
-    //     if(session.data.session.user.user_metaData.authLevel === process.env.REACT_APP_MSP_LEVEL) {
-    //         return redirect('/dashbord')
-    //     }
-    //     console.log(session)
-    // }, [session])
 
     const handleSubmit = async (e) => {
         e.preventDefault();

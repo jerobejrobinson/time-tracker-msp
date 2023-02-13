@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 const useFetchUserById = (id) => {
     const [user, setUser] = useState(null)
     const [fetchErrors, setFetchErrors] = useState(null)
-
+    
     useEffect(() => {
         const getUser = async () => {
             const { data, error } = await supabase

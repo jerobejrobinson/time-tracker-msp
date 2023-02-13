@@ -1,29 +1,14 @@
 import SessionContext from ".";
-import { useState, useEffect } from 'react'
-import supabase from "../../config/supabaseClient";
+import { useEffect, useState } from 'react'
+import useGetSession from './useGetSession'
 export default function SessionProvider({children}) {
     const [session, setSession] = useState(null);
+    const getSession = useGetSession()
     useEffect(() => {
-        const getSession = async () => {
-        const { data, error } = await supabase.auth.getSession();
-        if(error) {
-            console.log(error.message);
-            return ;
-        }
-        if(data) {                
-            setSession({data: data, error: null});
-            return;
-        }
-    }
-    getSession()
+        getSession().then(data => setSession(data))
     }, [])
-    useEffect(() => {
-        console.log(session)
-        console.log('session state has changed')
-    }, [session])
-    
     return (
-        <SessionContext.Provider value={session}>
+        <SessionContext.Provider value={{session: session, setSession}}>
             {children}
         </SessionContext.Provider>
     )
