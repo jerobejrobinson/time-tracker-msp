@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import SignOut from '../UserUtils/SignOut'
 export default function Navigation() {
     const {session} = useContext(SessionContext)
+    
     return (
         <nav>
           <h1>MSP Time Tracker</h1>

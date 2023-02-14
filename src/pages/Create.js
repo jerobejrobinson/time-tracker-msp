@@ -1,20 +1,48 @@
+// Configs and libs
 import { useContext, useState, useEffect } from "react"
 import SessionContext from "../lib/session"
+import supabase from "../config/supabaseClient";
+
+// Components
 import ProtectedPage from "../components/ProtectedPage";
-// import ScanUserUUID from "../components/Timer/ScanUserUUID";
 import ScanInput from "../components/Timer/ScanInput";
-// Custom Hooks
+import SelectTask from "../components/Timer/SelectTask";
+import Clock from "../components/Timer/Clock";
+import Pause from "../components/Timer/Pause";
+import End from "../components/Timer/End";
+
 const Create = () => {
   const { session } = useContext(SessionContext);
   const [userUUID, setUserUUID] = useState(null)
   const [ticketNumber, setTicketNumber] = useState(null)
+  const [taskType, setTaskType] = useState(null)
+  const [task, setTask] = useState(null)
 
   useEffect(() => {
-    console.log('user uuid',userUUID)
-    console.log('ticket number',ticketNumber)
+    if(userUUID && ticketNumber && taskType && !task) {
+      const startTask = async (user_id, ticket_id, task_type_id) => {
+        const { data, errors } = await supabase.from('tasks').insert({
+          user_id,
+          task_type_id,
+          ticket_id,
+          started: ((new Date()).toISOString()).toLocaleString('en-US')
+        }).select().single()
+    
+        if(errors) {
+          console.log('Errors creating task', errors)
+          return;
+        }
+        if(data) {
+          setTask(data)
+          return;
+        }
+    
+      }
+      startTask(userUUID.id, ticketNumber.id, taskType.id)
+      return;
+    }
+  }, [userUUID, ticketNumber, taskType, task])
 
-  }, [userUUID, ticketNumber])
-  // const [userUUID]
   if(!session) {
     return (
       <ProtectedPage />
@@ -23,7 +51,21 @@ const Create = () => {
   return (
     <div className="page create">
       {!userUUID && (<ScanInput table="users" setParent={setUserUUID} htmlForNameID="scanUserUUID" displayName="Scan User Id:"/>)}
-      {userUUID && !ticketNumber && (<ScanInput table="tickets" setParent={setTicketNumber} htmlForNameID="scanTicketNumber" displayName="Scan Ticket Number:"/>)}
+
+      {userUUID && 
+      !ticketNumber && 
+      (<ScanInput table="tickets" setParent={setTicketNumber} htmlForNameID="scanTicketNumber" displayName="Scan Ticket Number:"/>)}
+
+      {userUUID && ticketNumber && !taskType && (<SelectTask setParent={setTaskType}/>)}
+
+      {task && (
+        <>
+          <Clock task={task} setTask={setTask} setTaskType={setTaskType} setUserUUID={setUserUUID} setTicketNumber={setTicketNumber}/>
+          <Pause task={task} setParent={setTask}/>
+          <End  task={task} setParent={setTask}/>
+        </>
+      )}
+
     </div>
   )
 }
