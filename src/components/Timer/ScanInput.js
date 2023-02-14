@@ -1,27 +1,23 @@
 import supabase from "../../config/supabaseClient"
-import { useEffect, useState} from 'react'
-export default function ScanInput({displayName, htmlForNameID, setParent, table}) {
-    const [localState, setLocalState] = useState(null)
 
-    useEffect(() => {
-        const getData = async () => {
-            const {data, errors} = await supabase.from(table).select().eq('id', localState).single()
-            if(errors) {
-                console.log(errors)
-                return;
-            }
-            if(data) {
-                setParent(data)
-                return;
-            }
+export default function ScanInput({displayName, htmlForNameID, setParent, table}) {
+    const getData = async (value) => {
+        const {data, errors} = await supabase.from(table).select().eq('id', value).single()
+        if(errors) {
+            console.log('errors',errors)
+            return;
         }
-        getData()
-    }, [localState, setParent, table])
+        if(data) {
+            setParent(data)
+            return;
+        }
+    }
+
     return (
         <div className="timer ScanInput">
             <form>
                 <label htmlFor={htmlForNameID}>{displayName}</label>
-                <input htmlFor={htmlForNameID} name={htmlForNameID} id={htmlForNameID} onChange={(e) => setLocalState(e.target.value)}/>
+                <input htmlFor={htmlForNameID} name={htmlForNameID} id={htmlForNameID} onChange={(e) => getData(e.target.value)}/>
             </form>
         </div>
     )
