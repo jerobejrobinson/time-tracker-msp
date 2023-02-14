@@ -1,15 +1,13 @@
 import SessionContext from "../lib/session";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
-const Home = () => {
-  const session = useContext(SessionContext);
+import ProtectedPage from "../components/ProtectedPage";
 
-  if(!session || !session.session) {
+const Home = () => {
+  const { session } = useContext(SessionContext);
+
+  if(!session) {
     return (
-      <div className="page protected">
-        <p>This page is protected. Login to continue.</p>
-        <Link to="/login">Login Page</Link>
-      </div>
+      <ProtectedPage />
     )
   }
   return (
