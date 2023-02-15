@@ -25,7 +25,8 @@ const Create = () => {
           user_id,
           task_type_id,
           ticket_id,
-          started: ((new Date()).toISOString()).toLocaleString('en-US')
+          started: ((new Date()).toISOString()).toLocaleString('en-US'),
+          is_complete: false
         }).select().single()
     
         if(errors) {
