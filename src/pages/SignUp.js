@@ -13,7 +13,7 @@ export default function SignUp() {
             password: password,
             options: {
                 data: {
-                    authLevel: "mspGM" 
+                    authLevel: "mspTech" 
                 }
             }
         })

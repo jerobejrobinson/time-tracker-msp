@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import SessionProvider from "./lib/session/Provider"
 import Navigation from "./components/Navigation"
 
 // pages
 import Home from "./pages/Home"
-import Create from "./pages/Create"
+import StartTask from "./pages/StartTask"
 import Update from "./pages/Update"
 import Dashboard from "./pages/Dashboard"
 import AddNewUser from "./pages/Dashboard/AddNewUser"
@@ -13,6 +13,8 @@ import UserPage from "./pages/Dashboard/ViewUsers/UserPage"
 import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 import SignOut from "./pages/SignOut"
+import CreateTicket from "./pages/Dashboard/CreateTicket"
+
 function App() {
   return (
     <BrowserRouter>
@@ -20,12 +22,13 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/create" element={<Create />} />
+          <Route path="/start-task" element={<StartTask />} />
           <Route path="/:id" element={<Update />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/add-new-user" element={<AddNewUser />} />
-          <Route path="/dashboard/view-users" element={<ViewUsers />} />
-          <Route path="/dashboard/view-users/:id" element={<UserPage />} />
+          <Route path="/dashboard/add-new-tech" element={<AddNewUser />} />
+          <Route path="/dashboard/view-techs" element={<ViewUsers />} />
+          <Route path="/dashboard/view-techs/:id" element={<UserPage />} />
+          <Route path="/dashboard/new-tickets" element={<CreateTicket />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signout" element={<SignOut />} />

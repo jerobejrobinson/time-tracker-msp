@@ -1,5 +1,5 @@
 // Configs and libs
-import { useContext, useState, useEffect } from "react"
+import { useContext, useState, useEffect, useRef } from "react"
 import SessionContext from "../lib/session"
 import supabase from "../config/supabaseClient";
 
@@ -11,13 +11,15 @@ import Clock from "../components/Timer/Clock";
 import Pause from "../components/Timer/Pause";
 import End from "../components/Timer/End";
 
-const Create = () => {
+const StartTask = () => {
   const { session } = useContext(SessionContext);
+  
   const [userUUID, setUserUUID] = useState(null)
   const [ticketNumber, setTicketNumber] = useState(null)
   const [taskType, setTaskType] = useState(null)
   const [task, setTask] = useState(null)
 
+  
   useEffect(() => {
     if(userUUID && ticketNumber && taskType && !task) {
       const startTask = async (user_id, ticket_id, task_type_id) => {
@@ -71,4 +73,4 @@ const Create = () => {
   )
 }
 
-export default Create
+export default StartTask

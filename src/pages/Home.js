@@ -10,6 +10,11 @@ const Home = () => {
       <ProtectedPage />
     )
   }
+  if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_ONE) {
+    return (
+        <ProtectedPage loggedIn={true} />
+    )
+  }
   return (
     <div className="page home">
       <h2>Msp Time Tracker</h2>
