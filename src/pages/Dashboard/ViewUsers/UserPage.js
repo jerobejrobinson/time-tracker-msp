@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import supabase from "../../../config/supabaseClient";
 import TaskCard from "../../../components/TaskCard";
 import Breadcrumbs from "../../../components/Breadcrumbs";
+import './styles.css'
 export default function UserPage() {
     const {id} = useParams()
     const { data } = useFetchUserById(id);
@@ -43,15 +44,16 @@ export default function UserPage() {
         <div className="page userPage">
             <Breadcrumbs />
             <Link to="./../">{`<- Go Back`}</Link>
-            {data && (
-                <h3>{data.name}</h3>
-            )}
+            {data && (<h3>{data.name}</h3>)}
+            
             {tasks && (
                 <>
                     <h3>Tasks</h3>
-                    {tasks.map((task) => (
-                        <TaskCard task={task} key={task.id}/>
-                    ))}
+                    <div className="userTasklist">
+                        {tasks.map((task) => (
+                            <TaskCard task={task} key={task.id}/>
+                        ))}
+                    </div>
                 </>
             )}
         </div>

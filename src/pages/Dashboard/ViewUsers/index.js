@@ -2,6 +2,7 @@ import supabase from "../../../config/supabaseClient";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../../../components/Breadcrumbs";
+import './styles.css'
 
 export default function ViewUsers() {
     const [users, setUsers] = useState(null);

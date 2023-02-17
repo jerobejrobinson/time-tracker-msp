@@ -1,9 +1,13 @@
 import { useEffect, useState, useContext } from "react"
 import { Link } from "react-router-dom"
-import Breadcrumbs from "../../components/Breadcrumbs"
-import ProtectedPage from "../../components/ProtectedPage"
 import supabase from "../../config/supabaseClient"
 import SessionContext from "../../lib/session"
+
+import Breadcrumbs from "../../components/Breadcrumbs"
+import ProtectedPage from "../../components/ProtectedPage"
+import RealtimeTaskCards from "../../components/RealtimeTaskCards"
+
+import './styles.css'
 
 export default function Dashboard() {
     const {session} = useContext(SessionContext)
@@ -80,7 +84,7 @@ export default function Dashboard() {
             <ProtectedPage />
         )
     }
-    if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_1) {
+    if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_ONE) {
         return (
             <ProtectedPage loggedIn={true} />
         )
@@ -102,20 +106,7 @@ export default function Dashboard() {
 
 
             <h3>Current Tasks</h3>
-            {tasks && tasks.map(task => (
-                <div key={task.id}>
-                    <h4>{task.users.name}</h4>
-                    {realtime && realtime[task.id] && (
-                        <>
-                            <p>Working Time: {new Date(realtime[task.id].working_time * 1000).toISOString().substring(19, 11)}</p>
-                            <p>Paused Time: {new Date(realtime[task.id].paused_time * 1000).toISOString().substring(19, 11)}</p>
-                        </>
-                    )}
-                    <p>Ticket Number: {task.tickets.number}</p>
-                    <p>Part Number: {task.tickets.part_number}</p>
-                    <p>Task Type: {task.task_types.type}</p>
-                </div>
-            ))}
+            <RealtimeTaskCards tasks={tasks} realtime={realtime} />
         </div>
     )
 }

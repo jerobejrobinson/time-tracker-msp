@@ -1,13 +1,14 @@
+import './TaskCard.css'
 export default function TaskCard({task, key}) {
     return (
         <div key={key} className="taskCard">
-            <p>Start Time: </p>{new Date(task.started).toLocaleString()}
-            <p>End Time: </p>{new Date(task.ended).toLocaleString()}
-            <p>Labor Time: </p>{new Date(task.working_time * 1000).toISOString().substring(19, 11)}
-            <p>Time Spent Paused: </p>{new Date(task.paused_time * 1000).toISOString().substring(19, 11)}
-            <p>PO Number: </p>{task.tickets.number}
-            <p>Part Number: </p>{task.tickets.part_number}
-            <p>Task Type: </p>{task.task_types.type}
+            <p>Start Time: {new Date(task.started).toLocaleString()}</p>
+            <p>End Time: {new Date(task.ended).toLocaleString()}</p>
+            <p>Labor Time: {new Date(task.working_time * 1000).toISOString().substring(19, 11)}</p>
+            <p>Time Spent Paused: {new Date(task.paused_time * 1000).toISOString().substring(19, 11)}</p>
+            <p>PO Number: {task.tickets.number}</p>
+            <p>Part Number: {task.tickets.part_number}</p>
+            <p>Task Type: {task.task_types.type}</p>
         </div>
     )
 }

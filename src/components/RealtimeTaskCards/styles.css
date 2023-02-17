@@ -1,0 +1,17 @@
+.realtimeContainer {
+    display: flex;
+    flex-direction: column;
+}
+.liveTaskCard {
+    background-color: #ffffff;
+    padding: 1rem;
+    margin: 1rem;
+    flex-grow: 1;
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .realtimeContainer {
+        flex-direction: row;
+    }
+}
