@@ -45,7 +45,7 @@ export default function UserPage() {
             <Breadcrumbs />
             <Link to="./../">{`<- Go Back`}</Link>
             {data && (<h3>{data.name}</h3>)}
-            
+            <h3>Badge</h3>
             {tasks && (
                 <>
                     <h3>Tasks</h3>

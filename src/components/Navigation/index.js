@@ -9,7 +9,8 @@ export default function Navigation() {
     console.log(process.env.REACT_APP_MSP_LEVEL_ONE)
     return (
         <nav>
-          <h1>MSP Time Tracker</h1>
+          {/* <h1>MSP Time Tracker</h1> */}
+          <img src="/MSP-Logo-White.svg" alt="MSP Logo" width={200}/>
           <div>
             {/* <Link to="/">Home</Link> */}
             {session && session.user.user_metadata.authLevel === process.env.REACT_APP_MSP_LEVEL_TWO && (<Link to="/start-task">start-task</Link>)}

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import supabase from "../../config/supabaseClient"
 import SessionContext from "../../lib/session"
 
-import Breadcrumbs from "../../components/Breadcrumbs"
 import ProtectedPage from "../../components/ProtectedPage"
 import RealtimeTaskCards from "../../components/RealtimeTaskCards"
 
@@ -43,7 +42,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         if(tasks) {
-            tasks.map(task => {
+            tasks.forEach(task => {
                 task.working_time = 0;
                 task.paused_time = 0;
 
@@ -91,18 +90,29 @@ export default function Dashboard() {
     }
     return (
         <div className="page dashboard">
-            <Breadcrumbs />
             <h1>Dashboard</h1>
             <h2>Actions</h2>
-            <Link to='./view-techs'>View All Techs</Link>
-            <br />
-            <Link to='./add-new-tech'>Add New Tech</Link>
-            <br />
-            <Link to='./new-tickets'>Set Up New Tickets</Link>
-            <br />
-            <Link to='./view-tickets'>View Tickets</Link>
-            <br />
-            <Link to='./edit-ticket'>Edit Ticket</Link>
+            <div className="dashboardActions">
+                <Link to='./view-techs'>
+                    <button>View All Techs</button>
+                </Link>
+                <br />
+                <Link to='./add-new-tech'>
+                    <button>Add New Tech</button>
+                </Link>
+                <br />
+                <Link to='./new-tickets'>
+                    <button>Set Up New Tickets</button>
+                </Link>
+                <br />
+                <Link to='./view-tickets'>
+                    <button>View Tickets</button>
+                </Link>
+                <br />
+                <Link to='./edit-ticket'>
+                    <button>Edit Ticket</button>
+                </Link>
+            </div>
 
 
             <h3>Current Tasks</h3>

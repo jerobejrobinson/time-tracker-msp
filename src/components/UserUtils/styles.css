@@ -22,3 +22,15 @@ button:active {
 	position:relative;
 	top:1px;
 }
+button.btn-red {
+	background:linear-gradient(to bottom, #f76a58 5%, #e8523d 100%);
+	background-color: #f76a58;
+	border:1px solid #f35540;
+	box-shadow:inset 0px 1px 0px 0px #f7624f;
+	color:#fff;
+}
+
+button.btn-red:hover {
+	background:linear-gradient(to bottom, #e8523d 5%, #f35540 100%);
+	background-color: #e8523d;
+}

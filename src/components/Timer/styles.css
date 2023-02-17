@@ -1,0 +1,23 @@
+.ScanInput form {
+    display: flex;
+    flex-direction: column;
+}
+
+.ScanInput form label {
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.ScanInput div {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+button.btn-red {
+    background-color: #e8523d;
+}

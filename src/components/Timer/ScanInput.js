@@ -1,5 +1,7 @@
 import supabase from "../../config/supabaseClient"
 import { useRef, useEffect, useState } from "react"
+import './styles.css'
+
 export default function ScanInput({displayName, htmlForNameID, setParent, table}) {
     const input = useRef(null)
     const [enterPartNumber, setEnterPartNumber] = useState(false)
@@ -13,7 +15,7 @@ export default function ScanInput({displayName, htmlForNameID, setParent, table}
             return;
         }
         if(data) {
-            if(table == 'tickets') {
+            if(table === 'tickets') {
                 if(!data.part_number) {
                     console.log(data)
                     setTicketId(data.id)
@@ -55,7 +57,7 @@ export default function ScanInput({displayName, htmlForNameID, setParent, table}
             </form>
             {enterPartNumber && ticketId && (
                 <div >
-                    <label htmlFor="partNumber">Add part number to ticket: </label>
+                    <label htmlFor="partNumber">Add part number to ticket </label>
                     <input type="text" name="partNumber" id="partNumber" onChange={(e) => setPartNumber(e.target.value)}/>
                     <button type="button" onClick={handleAddPartNumber}>save part number</button>
                 </div>

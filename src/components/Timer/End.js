@@ -15,7 +15,7 @@ export default function End({task, setParent}) {
     }
     return (
         <>
-            <button onClick={endTask}>End Task</button>
+            <button onClick={endTask} className="btn-red">End Task</button>
         </>
     )
 }

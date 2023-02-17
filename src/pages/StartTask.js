@@ -1,5 +1,5 @@
 // Configs and libs
-import { useContext, useState, useEffect, useRef } from "react"
+import { useContext, useState, useEffect } from "react"
 import SessionContext from "../lib/session"
 import supabase from "../config/supabaseClient";
 
@@ -52,23 +52,24 @@ const StartTask = () => {
     )
   }
   return (
-    <div className="page create">
-      {!userUUID && (<ScanInput table="users" setParent={setUserUUID} htmlForNameID="scanUserUUID" displayName="Scan User Id:"/>)}
+    <div className="page startTask">
+        {!userUUID && (<ScanInput table="users" setParent={setUserUUID} htmlForNameID="scanUserUUID" displayName="Scan User Id"/>)}
 
-      {userUUID && 
-      !ticketNumber && 
-      (<ScanInput table="tickets" setParent={setTicketNumber} htmlForNameID="scanTicketNumber" displayName="Scan Ticket Number:"/>)}
+        {userUUID && 
+        !ticketNumber && 
+        (<ScanInput table="tickets" setParent={setTicketNumber} htmlForNameID="scanTicketNumber" displayName="Scan Ticket Number"/>)}
 
-      {userUUID && ticketNumber && !taskType && (<SelectTask setParent={setTaskType}/>)}
+        {userUUID && ticketNumber && !taskType && (<SelectTask setParent={setTaskType}/>)}
 
-      {task && (
-        <>
-          <Clock task={task} setTask={setTask} setTaskType={setTaskType} setUserUUID={setUserUUID} setTicketNumber={setTicketNumber}/>
-          <Pause task={task} setParent={setTask}/>
-          <End  task={task} setParent={setTask}/>
-        </>
-      )}
-
+        {task && (
+          <>
+            <Clock task={task} setTask={setTask} setTaskType={setTaskType} setUserUUID={setUserUUID} setTicketNumber={setTicketNumber}/>
+            <div>
+              <Pause task={task} setParent={setTask}/>
+              <End  task={task} setParent={setTask}/>
+            </div>
+          </>
+        )}
     </div>
   )
 }

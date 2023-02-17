@@ -32,3 +32,15 @@ nav h1 {
   margin: 20px auto;
   padding: 20px;
 }
+.startTask {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #6d15df; */
+}
+
+.startTask > div {
+  /* background-color: #333; */
+  /* width: 100%; */
+}

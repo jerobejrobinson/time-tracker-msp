@@ -1,0 +1,9 @@
+.dashboardActions {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: space-between; */
+}
+
+.dashboardActions button {
+    margin-right: 1rem;
+}
