@@ -46,6 +46,7 @@ export default function UserPage() {
             <Link to="./../">{`<- Go Back`}</Link>
             {data && (<h3>{data.name}</h3>)}
             <h3>Badge</h3>
+            {data && (<img src={`http://bwipjs-api.metafloor.com/?bcid=code128&text=${id}&parsefnc&alttext=${data.name}`} alt="" />)}
             {tasks && (
                 <>
                     <h3>Tasks</h3>

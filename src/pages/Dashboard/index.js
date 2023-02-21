@@ -90,9 +90,8 @@ export default function Dashboard() {
     }
     return (
         <div className="page dashboard">
-            <h1>Dashboard</h1>
             <h2>Actions</h2>
-            <div className="dashboardActions">
+            <div className="dashboardActions" style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white', marginBottom: '1rem'}}>
                 <Link to='./view-techs'>
                     <button>View All Techs</button>
                 </Link>
@@ -116,7 +115,7 @@ export default function Dashboard() {
 
 
             <h3>Current Tasks</h3>
-            <RealtimeTaskCards tasks={tasks} realtime={realtime} />
+            {realtime && (<RealtimeTaskCards tasks={tasks} realtime={realtime} />)}
         </div>
     )
 }

@@ -14,7 +14,8 @@ import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
 import SignOut from "./pages/SignOut"
 import CreateTicket from "./pages/Dashboard/CreateTicket"
-
+import ViewTickets from "./pages/Dashboard/ViewTickets"
+import TicketPage from "./pages/Dashboard/ViewTickets/TicketPage"
 function App() {
   return (
     <BrowserRouter>
@@ -29,6 +30,8 @@ function App() {
           <Route path="/dashboard/view-techs" element={<ViewUsers />} />
           <Route path="/dashboard/view-techs/:id" element={<UserPage />} />
           <Route path="/dashboard/new-tickets" element={<CreateTicket />} />
+          <Route path="/dashboard/view-tickets" element={<ViewTickets />} />
+          <Route path="/dashboard/view-tickets/:id" element={<TicketPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signout" element={<SignOut />} />

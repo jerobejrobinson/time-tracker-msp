@@ -4,3 +4,29 @@
     margin: 1rem;
     flex-grow: 1;
 }
+
+.taskCardAlt {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+    background-color: #ffffff;
+    padding: 1rem;
+    box-shadow: inset;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+#taskCardAltUsername {
+    flex-basis: 100%;
+    font-weight: 700;
+}
+
+#add-parts {
+    display: grid;
+    grid-template-columns: 1fr 2fr 4fr 1fr 1fr;
+}
+
+/* .partsOrderedContainer:nth-child(even) {
+    background-color: ;
+} */
