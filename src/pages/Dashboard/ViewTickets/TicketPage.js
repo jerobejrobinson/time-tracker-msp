@@ -9,6 +9,7 @@ import CustomerInformation from "../../../components/TicketPage/CustomerInformat
 
 import './styles.css'
 import PartsOrdered from "../../../components/TicketPage/PartOrdered";
+import Billing from "../../../components/TicketPage/Billing";
 
 export default function TicketPage() {
     const { id } = useParams()
@@ -23,6 +24,9 @@ export default function TicketPage() {
 
     const partsOrderedContainer = useRef(null)
     const [displayPartsOrdered, setDisplayPartsOrdered] = useState(false)
+
+    const billingContainer = useRef(null)
+    const [displayBilling, setDisplayBilling] = useState(false)
 
     useEffect(() => {
         const getData = async () => {
@@ -89,7 +93,13 @@ export default function TicketPage() {
             {/* Billing ------------------------------------------------------------------------------------------------------*/}
             <div className="module">
                 <p><FontAwesomeIcon icon={faFileInvoice} /> Billing</p>
-                <p className="caretContainer" >{displayTask ? <FontAwesomeIcon icon={faX} /> : <FontAwesomeIcon icon={faCaretDown} />}</p>
+                <p className="caretContainer" onClick={() => {
+                    billingContainer.current.classList.toggle('open')
+                    setDisplayBilling(prev => !prev)
+                }}>{displayBilling ? <FontAwesomeIcon icon={faX} /> : <FontAwesomeIcon icon={faCaretDown} />}</p>
+            </div>
+            <div className="toggle" ref={billingContainer}>
+                {displayBilling && (<Billing />)}
             </div>
         </div>
     )

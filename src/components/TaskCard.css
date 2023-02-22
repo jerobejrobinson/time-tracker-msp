@@ -21,12 +21,3 @@
     flex-basis: 100%;
     font-weight: 700;
 }
-
-#add-parts {
-    display: grid;
-    grid-template-columns: 1fr 2fr 4fr 1fr 1fr;
-}
-
-/* .partsOrderedContainer:nth-child(even) {
-    background-color: ;
-} */

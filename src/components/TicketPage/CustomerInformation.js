@@ -34,7 +34,7 @@ export default function CustomerInformation() {
         getData()
     }, [])
     if(customer) return (
-        <div style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white'}}>
+        <div style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white', width: '100%'}}>
             <p>Name: {customer.name}</p>
             <p>Phone: {customer.phone}</p>
             <p>Cell: {customer.cell}</p>

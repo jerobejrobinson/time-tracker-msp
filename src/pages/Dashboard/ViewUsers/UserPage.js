@@ -1,12 +1,13 @@
-// import supabase from "../../../config/supabaseClient";
-// import { useState, useEffect } from 'react';
 import { useParams, Link } from "react-router-dom";
 import useFetchUserById from "../../../hooks/useFetchUserById";
 import { useEffect, useState } from "react";
 import supabase from "../../../config/supabaseClient";
+
 import TaskCard from "../../../components/TaskCard";
 import Breadcrumbs from "../../../components/Breadcrumbs";
+
 import './styles.css'
+
 export default function UserPage() {
     const {id} = useParams()
     const { data } = useFetchUserById(id);
@@ -40,6 +41,7 @@ export default function UserPage() {
         }
         getUserTasks()
     }, [id])
+
     return (
         <div className="page userPage">
             <Breadcrumbs />

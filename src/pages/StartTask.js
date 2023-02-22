@@ -7,9 +7,10 @@ import supabase from "../config/supabaseClient";
 import ProtectedPage from "../components/ProtectedPage";
 import ScanInput from "../components/Timer/ScanInput";
 import SelectTask from "../components/Timer/SelectTask";
-import Clock from "../components/Timer/Clock";
+import Clock from "../components/Timer/Clock"; 
 import Pause from "../components/Timer/Pause";
 import End from "../components/Timer/End";
+
 
 const StartTask = () => {
   const { session } = useContext(SessionContext);
@@ -21,6 +22,10 @@ const StartTask = () => {
 
   
   useEffect(() => {
+    console.log(userUUID)
+    if(userUUID) {
+      document.title = userUUID.name
+    }
     if(userUUID && ticketNumber && taskType && !task) {
       const startTask = async (user_id, ticket_id, task_type_id) => {
         const { data, errors } = await supabase.from('tasks').insert({

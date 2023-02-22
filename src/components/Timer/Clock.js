@@ -1,19 +1,25 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import supabase from "../../config/supabaseClient"
+import { clearInterval, setInterval } from 'worker-timers';
 
 export default function Clock({task, setTask, setUserUUID, setTicketNumber, setTaskType}) {
+    
     const channel = useRef(null)
 
-    const [time, setTimer] = useState(0);
-    const [timeStr, setTimeStr] = useState(null)
+    const working_time = useRef(0)
+    const paused_time = useRef(0)
+    const wStrRef = useRef(null)
+    const pStrRef = useRef(null)
 
-    const [pauseTime, setPauseTime] = useState(0)
-    const [pauseTimeStr, setPauseTimeStr] = useState(null)
-
-    const timer = (setClock, clock, setStr, bool) => {
-        setClock(prev => prev + 1)
-        setStr(new Date(clock * 1000).toISOString().substring(19, 11));
-        channel.current.track({working_time: time, paused_time: pauseTime})
+    const timer = (bool) => {
+        if(bool) {
+            working_time.current += 1
+            wStrRef.current.textContent = new Date(working_time.current * 1000).toISOString().substring(19, 11)
+        } else {
+            paused_time.current += 1
+            pStrRef.current.textContent = new Date(paused_time.current * 1000).toISOString().substring(19, 11)
+        }
+        channel.current.track({working_time: working_time.current, paused_time: paused_time.current})
     }
 
     const resetState = () => {
@@ -32,17 +38,17 @@ export default function Clock({task, setTask, setUserUUID, setTicketNumber, setT
                 const roomState = channel.current.presenceState()
                 console.log(roomState)
             })
-            .subscribe(async (status) => {
-                console.log('status: ', status)
-                if(status === 'SUBSCRIBED') {
-                    const res = await channel.current.track({working_time: time, paused_time: pauseTime});
-                    console.log(res)
-                }
-            })
+            .subscribe()
         }
     }, [])
 
     useEffect(() => {
+        console.log('useEffect')
+        window.addEventListener("beforeunload", (ev) => {  
+            ev.preventDefault();
+            return;
+        });
+        
         if(task.is_complete) {
             const endTask = async (pt, wt) => {
                 const {data, errors} = await supabase.from('tasks').update({paused_time: pt, working_time: wt}).eq('id', task.id).select().single()
@@ -56,23 +62,29 @@ export default function Clock({task, setTask, setUserUUID, setTicketNumber, setT
                     return;
                 }
             }
-            endTask(pauseTime, time)
+            endTask(paused_time.current, working_time.current)
             return;
         }
         if(!task.paused) {
-            const mainInterval = setInterval(() => timer(setTimer, time, setTimeStr, true), 1000)
-            return () => clearInterval(mainInterval)
+            const mainInterval = setInterval(() => timer(true), 1000)
+            return () => {
+                clearInterval(mainInterval)
+            }
         } else {
-            const pauseInterval = setInterval(() => timer(setPauseTime, pauseTime, setPauseTimeStr, false), 1000)
-            return () => clearInterval(pauseInterval)
+            const pauseInterval = setInterval(() => timer(false), 1000)
+            return () => {
+                clearInterval(pauseInterval)
+                window.removeEventListener("beforeunload", (ev) => {  
+                    ev.preventDefault();
+                });
+            }
         }
-        
     })
 
     return (
         <div>
-            {!task.paused && (<h1>{timeStr}</h1>)}
-            {task.paused && (<h1>{pauseTimeStr}</h1>)}
+            {!task.paused && (<h1 ref={wStrRef}></h1>)}
+            {task.paused && (<h1 ref={pStrRef}></h1>)}
         </div>
     )
 }

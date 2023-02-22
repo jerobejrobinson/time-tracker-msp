@@ -22,7 +22,7 @@ export default function ViewTickets() {
         getData()
     }, [])
 
-    if(!tickets) return <div className="oage ViewTickets"><p>Loading...</p></div>
+    if(!tickets) return <div className="page ViewTickets"><p>Loading...</p></div>
     return (
         <div className="page ViewTickets">
             <h3>Tickets</h3>

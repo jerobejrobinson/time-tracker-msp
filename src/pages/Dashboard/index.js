@@ -95,22 +95,15 @@ export default function Dashboard() {
                 <Link to='./view-techs'>
                     <button>View All Techs</button>
                 </Link>
-                <br />
                 <Link to='./add-new-tech'>
                     <button>Add New Tech</button>
                 </Link>
-                <br />
                 <Link to='./new-tickets'>
                     <button>Set Up New Tickets</button>
-                </Link>
-                <br />
+                </Link>                
                 <Link to='./view-tickets'>
                     <button>View Tickets</button>
-                </Link>
-                <br />
-                <Link to='./edit-ticket'>
-                    <button>Edit Ticket</button>
-                </Link>
+                </Link>                
             </div>
 
 

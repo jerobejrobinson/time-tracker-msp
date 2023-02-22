@@ -66,24 +66,17 @@ export default function PartsOrdered() {
     return (
         <div style={{width: '100%'}}>
             <p>Add Parts</p>
-            <div id="add-parts"  style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white'}}>
-                <div id="poQtyContainer">
-                    <label htmlFor="poQty">Quanity: </label><br />
-                    <input type="text" name="poQty" id="poQty" style={{width: '50%'}}/>
-                </div>
-                <div id="poNumberContainer">
-                    <label htmlFor="poNumber">Part Number: </label><br />
-                    <input type="text" name="poNumber" id="poNumber" />
-                </div>
-                <div id="poDescContainer">
-                    <label htmlFor="poDesc">Description: </label><br />
-                    <input type="text" name="poDesc" id="poDesc" style={{width: '85%'}}/>
-                </div>
-                <div id="poCostContainer">
-                    <label htmlFor="poCost">Amount: </label><br />
-                    <input type="text" name="poCost" id="poCost" />
-                </div>
-                <p onClick={handleAddParts} style={{cursor: 'pointer', color: 'var(--primary)', textAlign: 'center', fontSize: '1.2rem'}}><FontAwesomeIcon icon={faPlusCircle} /></p>
+            <div id="add-parts"  style={{display: 'grid', gridTemplateColumns: '1fr 2fr 4fr 1fr 1fr',boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white'}}>
+                <label htmlFor="poQty">Quanity: </label>
+                <label htmlFor="poNumber">Part Number: </label>
+                <label htmlFor="poDesc">Description: </label>
+                <label htmlFor="poCost">Amount: </label>
+                <p></p>
+                <input type="text" name="poQty" id="poQty"/>
+                <input type="text" name="poNumber" id="poNumber" />
+                <input type="text" name="poDesc" id="poDesc" />
+                <input type="text" name="poCost" id="poCost" />
+                <p onClick={handleAddParts} style={{cursor: 'pointer', color: 'var(--primary)', textAlign: 'center'}}><FontAwesomeIcon icon={faPlusCircle} /></p>
             </div>
             <p>Parts Ordered</p>
             <div style={{display: 'grid', gridTemplateColumns: '1fr 2fr 4fr 1fr 1fr', boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white', fontWeight: 700}} >

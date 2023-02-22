@@ -33,17 +33,24 @@ export default function AddNewUser() {
     return (
         <div className="page addNewUser">
             <Breadcrumbs />
-            <h2>Create New User</h2>
-            <form>
-                <label htmlFor="userName">Full Name: </label>
-                <input type="text" name="userName" id="username" onChange={(e) => setName(e.target.value)}/>
-                <button onClick={handleAddUser}>Add User</button>
+            <h2>Create New Tech</h2>
+            <form style={{
+                boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", 
+                padding: '1rem', 
+                background: 'white', 
+                marginBottom: '1rem', 
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr 1fr'
+            }}>
+                <label htmlFor="userName">Enter Full Name: </label>
+                <input type="text" name="userName" id="username" onChange={(e) => setName(e.target.value)} style={{gridColumn: '1/2'}}/>
+                <button onClick={handleAddUser} style={{gridColumn: '1/2' , marginTop: '.5rem'}}>Add User</button>
             </form>
             {fetchErrors && ( <div className="fetchErrors">{fetchErrors.message}</div>)}
             {user && user.map((user) => (
-                <div className="card users" key={user.id}>
+                <div className="card users" key={user.id} style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white', marginBottom: '1rem'}}>
                     <h3>{user.name}</h3>
-                    <Link to={`/dashboard/view-users/${user.id}`}>go to user page</Link>
+                    <Link to={`/dashboard/view-techs/${user.id}`}>go to tech page and print new badge</Link>
                 </div>
             ))}
         </div>
