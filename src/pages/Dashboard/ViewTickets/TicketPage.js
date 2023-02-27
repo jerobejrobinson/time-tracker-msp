@@ -1,17 +1,20 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import supabase from "../../../config/supabaseClient";
+import SessionContext from "../../../lib/session";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX, faCaretDown, faListCheck, faAddressCard, faFileInvoice, faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import TaskList from "../../../components/TicketPage/TaskList";
 import CustomerInformation from "../../../components/TicketPage/CustomerInformation";
-
-import './styles.css'
 import PartsOrdered from "../../../components/TicketPage/PartOrdered";
 import Billing from "../../../components/TicketPage/Billing";
+import ProtectedPage from "../../../components/ProtectedPage";
+
+import './styles.css'
 
 export default function TicketPage() {
+    const {session} = useContext(SessionContext)
     const { id } = useParams()
     const [ticket, setTicket] = useState(null)
     const [errors, setErrors] = useState(null)
@@ -43,7 +46,16 @@ export default function TicketPage() {
         }
         getData();
     }, [])
-
+    if(!session) {
+        return (
+            <ProtectedPage />
+        )
+    }
+    if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_ONE) {
+        return (
+            <ProtectedPage loggedIn={true} />
+        )
+    }
     if(errors) return <div className="page"><h3>Error</h3>{errors.message}</div>
     if(!ticket) return <div className="page">Loading...</div>
     return (

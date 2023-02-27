@@ -1,15 +1,19 @@
-import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
-import Breadcrumbs from "../../components/Breadcrumbs"
 import supabase from "../../config/supabaseClient";
+import { useContext, useEffect, useState } from "react"
+import SessionContext from "../../lib/session";
+
+import ProtectedPage from "../../components/ProtectedPage";
+import { Link } from "react-router-dom"
+
+import Breadcrumbs from "../../components/Breadcrumbs"
 export default function AddNewUser() {
+    const {session} = useContext(SessionContext)
     const [ name, setName ] = useState('');
     const [ user, setUser] = useState(null);
     const [ fetchErrors, setFetchErrors ] = useState(null);
 
     const handleAddUser = async (e) => {
         e.preventDefault()
-        console.log('test')
         const { data, error } = await supabase
             .from('users')
             .insert([{name}])
@@ -29,7 +33,16 @@ export default function AddNewUser() {
             return;
         }
     }
-
+    if(!session) {
+        return (
+            <ProtectedPage />
+        )
+    }
+    if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_ONE) {
+        return (
+            <ProtectedPage loggedIn={true} />
+        )
+    }
     return (
         <div className="page addNewUser">
             <Breadcrumbs />

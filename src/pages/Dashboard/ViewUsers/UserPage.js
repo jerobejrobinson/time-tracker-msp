@@ -1,14 +1,17 @@
 import { useParams, Link } from "react-router-dom";
 import useFetchUserById from "../../../hooks/useFetchUserById";
-import { useEffect, useState } from "react";
 import supabase from "../../../config/supabaseClient";
+import { useState, useEffect, useContext } from "react";
+import SessionContext from "../../../lib/session";
 
+import ProtectedPage from "../../../components/ProtectedPage";
 import TaskCard from "../../../components/TaskCard";
 import Breadcrumbs from "../../../components/Breadcrumbs";
 
 import './styles.css'
 
 export default function UserPage() {
+    const {session} = useContext(SessionContext)
     const {id} = useParams()
     const { data } = useFetchUserById(id);
     const [tasks, setTasks] = useState(null)
@@ -41,7 +44,16 @@ export default function UserPage() {
         }
         getUserTasks()
     }, [id])
-
+    if(!session) {
+        return (
+            <ProtectedPage />
+        )
+    }
+    if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_ONE) {
+        return (
+            <ProtectedPage loggedIn={true} />
+        )
+    }
     return (
         <div className="page userPage">
             <Breadcrumbs />

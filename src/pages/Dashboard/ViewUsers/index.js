@@ -1,7 +1,9 @@
 import supabase from "../../../config/supabaseClient";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import SessionContext from "../../../lib/session";
 
+import ProtectedPage from "../../../components/ProtectedPage";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import Breadcrumbs from "../../../components/Breadcrumbs";
@@ -9,6 +11,7 @@ import Breadcrumbs from "../../../components/Breadcrumbs";
 import './styles.css'
 
 export default function ViewUsers() {
+    const {session} = useContext(SessionContext)
     const [users, setUsers] = useState(null);
     const [ fetchErrors, setFetchErrors] = useState(null);
 
@@ -30,6 +33,16 @@ export default function ViewUsers() {
 
         fetchUsers()
     }, [])
+    if(!session) {
+        return (
+            <ProtectedPage />
+        )
+    }
+    if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_ONE) {
+        return (
+            <ProtectedPage loggedIn={true} />
+        )
+    }
     return (
         <div className="page viewUsers">
             <Breadcrumbs />

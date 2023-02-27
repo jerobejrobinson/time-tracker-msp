@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import SessionProvider from "./lib/session/Provider"
 import Navigation from "./components/Navigation"
+import SessionProvider from "./lib/session/Provider"
 
 // pages
 import Home from "./pages/Home"
 import StartTask from "./pages/StartTask"
-import Update from "./pages/Update"
 import Dashboard from "./pages/Dashboard"
 import AddNewUser from "./pages/Dashboard/AddNewUser"
 import ViewUsers from "./pages/Dashboard/ViewUsers"
@@ -16,6 +15,7 @@ import SignOut from "./pages/SignOut"
 import CreateTicket from "./pages/Dashboard/CreateTicket"
 import ViewTickets from "./pages/Dashboard/ViewTickets"
 import TicketPage from "./pages/Dashboard/ViewTickets/TicketPage"
+
 function App() {
   return (
     <BrowserRouter>
@@ -24,7 +24,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/start-task" element={<StartTask />} />
-          <Route path="/:id" element={<Update />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/add-new-tech" element={<AddNewUser />} />
           <Route path="/dashboard/view-techs" element={<ViewUsers />} />

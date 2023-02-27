@@ -1,9 +1,12 @@
 import supabase from "../../../config/supabaseClient"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
 import { Link } from "react-router-dom"
+import SessionContext from "../../../lib/session"
 
+import ProtectedPage from "../../../components/ProtectedPage"
 
 export default function ViewTickets() {
+    const {session} = useContext(SessionContext)
     const [tickets, setTickets] = useState(null)
 
     useEffect(() => {
@@ -21,7 +24,16 @@ export default function ViewTickets() {
         }
         getData()
     }, [])
-
+    if(!session) {
+        return (
+            <ProtectedPage />
+        )
+    }
+    if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_ONE) {
+        return (
+            <ProtectedPage loggedIn={true} />
+        )
+    }
     if(!tickets) return <div className="page ViewTickets"><p>Loading...</p></div>
     return (
         <div className="page ViewTickets">
