@@ -11,7 +11,6 @@ import ViewUsers from "./pages/Dashboard/ViewUsers"
 import UserPage from "./pages/Dashboard/ViewUsers/UserPage"
 import Login from "./pages/Login"
 import SignUp from "./pages/SignUp"
-import SignOut from "./pages/SignOut"
 import CreateTicket from "./pages/Dashboard/CreateTicket"
 import ViewTickets from "./pages/Dashboard/ViewTickets"
 import TicketPage from "./pages/Dashboard/ViewTickets/TicketPage"
@@ -33,7 +32,6 @@ function App() {
           <Route path="/dashboard/view-tickets/:id" element={<TicketPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/signout" element={<SignOut />} />
         </Routes>
       </SessionProvider>
     </BrowserRouter>

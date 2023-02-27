@@ -23,18 +23,28 @@ export default function Login() {
         }
     }
     return (
-        <div className="page login">
-            <form onSubmit={async (e) => handleLogin(e)}>
+        <div className="page login" style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+            <form onSubmit={async (e) => handleLogin(e)}  style={{
+                boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", 
+                padding: '1rem', 
+                background: 'white',
+                display: 'grid', 
+                gridTemplateColumns: '1fr 1fr',
+                width: '50%'
+            }}>
+                <h1 style={{gridColumn: '1/4', textAlign: 'center', marginBottom: '1rem'}}>Login</h1>
                 <div>
                     <label htmlFor="emailInput">Email:</label>
-                    <input type="text" htmlFor="emailInput" id="emailInput" onChange={(e) => setEmail(e.target.value)}/>
+                    <br />
+                    <input type="text" htmlFor="emailInput" id="emailInput" onChange={(e) => setEmail(e.target.value)} style={{width: '90%'}}/>
                 </div>
                 <div>
                     <label htmlFor="passwordInput">Password:</label>
-                    <input type="password" htmlFor="passwordInput" id="passwordInput" onChange={(e) => setPassword(e.target.value)} />
+                    <br />
+                    <input type="password" htmlFor="passwordInput" id="passwordInput" onChange={(e) => setPassword(e.target.value)}  style={{width: '94%'}}/>
                 </div>
-                <div>
-                    <button type='submit'>Login</button>
+                <div style={{gridColumn: '1/4'}}>
+                    <button type='submit' style={{width: '100%', marginTop: '1rem'}}>Login</button>
                 </div>
             </form>
         </div>
