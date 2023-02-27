@@ -1,11 +1,9 @@
 import supabase from '../config/supabaseClient';
 import { useState, useContext} from 'react';
-import { Navigate } from 'react-router-dom';
 import SessionContext from '../lib/session';
 
 export default function Login() {
-    const session = useContext(SessionContext);
-    const [ localSession, setLocalSession ] = useState(null)
+    const {session} = useContext(SessionContext);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
     const handleLogin = async (e) => {
