@@ -1,11 +1,15 @@
 import supabase from "../../../config/supabaseClient";
+import { useEffect, useState, useContext } from "react";
+import SessionContext from "../../../lib/session";
+
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { useEffect, useState } from "react";
 import WorkOrder from "../../../components/PDF/WorkOrder";
+import ProtectedPage from "../../../components/ProtectedPage";
 
 export default function CreateTicket() {
-    const [ quanity, setQuanity] = useState(null)
-    const [ location, setLocation] = useState(null)
+    const {session} = useContext(SessionContext)
+    const [quanity, setQuanity] = useState(null)
+    const [location, setLocation] = useState(null)
     const [lastTicketId, setLastTicketId] = useState(null)
     const [ticketArr, setTicketArr] = useState(null)
 
@@ -25,11 +29,6 @@ export default function CreateTicket() {
         }
         getLastTicket()
     }, [lastTicketId])
-
-    // useEffect(() => {  
-    //     if
-    //     console.log(lastTicketId)
-    // }, [lastTicketId])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -71,7 +70,16 @@ export default function CreateTicket() {
         }
         insertTickets()
     }
-
+    if(!session) {
+        return (
+            <ProtectedPage />
+        )
+    }
+    if(session && session.user.user_metadata.authLevel !== process.env.REACT_APP_MSP_LEVEL_ONE) {
+        return (
+            <ProtectedPage loggedIn={true} />
+        )
+    }
     return (
         <div className="page" style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white'}}>
             <h3>create new tickets</h3>
