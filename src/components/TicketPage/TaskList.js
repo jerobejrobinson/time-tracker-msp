@@ -12,9 +12,11 @@ export default function TaskList() {
         const getData = async () => {
             const { data, errors } = await supabase.from('tasks').select(
                 `
+                id,
                 working_time,
                 paused_time,
                 is_complete,
+                admin_ended,
                 started,
                 ended,
                 tickets (
@@ -48,7 +50,7 @@ export default function TaskList() {
     if(!tasklist) return <div>No Task Started</div>
     return (
         <div style={{width: '100%'}}>
-            {tasklist.map((task) => <TaskCard task={task} key={task.id} alt={true}/>)}
+            {tasklist.map((task) => <TaskCard task={task} key={task.id} alt/>)}
         </div>
     )
 }

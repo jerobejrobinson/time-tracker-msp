@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams} from "react-router-dom";
 import useFetchUserById from "../../../hooks/useFetchUserById";
 import supabase from "../../../config/supabaseClient";
 import { useState, useEffect, useContext } from "react";
@@ -57,7 +57,6 @@ export default function UserPage() {
     return (
         <div className="page userPage">
             <Breadcrumbs />
-            <Link to="./../">{`<- Go Back`}</Link>
             {data && (<h3>{data.name}</h3>)}
             <h3>Badge</h3>
             {data && (<img src={`http://bwipjs-api.metafloor.com/?bcid=code128&text=${id}&parsefnc&alttext=${data.name}`} alt="" />)}

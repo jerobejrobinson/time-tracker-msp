@@ -11,12 +11,22 @@ export default function Clock({task, setTask, setUserUUID, setTicketNumber, setT
     const wStrRef = useRef(null)
     const pStrRef = useRef(null)
 
-    const timer = (bool) => {
+    const timer = (bool, task) => {
         if(bool) {
             working_time.current += 1
+            if(working_time.current % 150 === 0) {
+                (async () => {
+                    await supabase.from('tasks').update({paused_time: paused_time.current, working_time: working_time.current}).eq('id', task.id)
+                })()
+            }
             wStrRef.current.textContent = new Date(working_time.current * 1000).toISOString().substring(19, 11)
         } else {
             paused_time.current += 1
+            if(paused_time.current % 150 === 0) {
+                (async () => {
+                    await supabase.from('tasks').update({paused_time: paused_time.current, working_time: working_time.current}).eq('id', task.id)
+                })()
+            }
             pStrRef.current.textContent = new Date(paused_time.current * 1000).toISOString().substring(19, 11)
         }
         channel.current.track({working_time: working_time.current, paused_time: paused_time.current})
@@ -66,12 +76,12 @@ export default function Clock({task, setTask, setUserUUID, setTicketNumber, setT
             return;
         }
         if(!task.paused) {
-            const mainInterval = setInterval(() => timer(true), 1000)
+            const mainInterval = setInterval(() => timer(true, task), 1000)
             return () => {
                 clearInterval(mainInterval)
             }
         } else {
-            const pauseInterval = setInterval(() => timer(false), 1000)
+            const pauseInterval = setInterval(() => timer(false, task), 1000)
             return () => {
                 clearInterval(pauseInterval)
                 window.removeEventListener("beforeunload", (ev) => {  
@@ -83,8 +93,8 @@ export default function Clock({task, setTask, setUserUUID, setTicketNumber, setT
 
     return (
         <div>
-            {!task.paused && (<h1 ref={wStrRef}></h1>)}
-            {task.paused && (<h1 ref={pStrRef}></h1>)}
+            {!task.paused && (<p style={{fontSize: '2rem', fontWeight: '700'}} ref={wStrRef}></p>)}
+            {task.paused && (<p style={{fontSize: '2rem', fontWeight: '700'}} ref={pStrRef}></p>)}
         </div>
     )
 }

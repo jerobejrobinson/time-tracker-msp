@@ -12,6 +12,7 @@ import Billing from "../../../components/TicketPage/Billing";
 import ProtectedPage from "../../../components/ProtectedPage";
 
 import './styles.css'
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 export default function TicketPage() {
     const {session} = useContext(SessionContext)
@@ -45,7 +46,7 @@ export default function TicketPage() {
             }
         }
         getData();
-    }, [])
+    }, [id])
     if(!session) {
         return (
             <ProtectedPage />
@@ -60,6 +61,7 @@ export default function TicketPage() {
     if(!ticket) return <div className="page">Loading...</div>
     return (
         <div className="page">
+            <Breadcrumbs />
             <div className="module">
                 <p style={{fontWeight: 700}}>Ticket Number: {ticket.number}</p>
                 <p>Part Number: {ticket.part_number}</p>

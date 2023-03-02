@@ -5,6 +5,7 @@ import SessionContext from "../../../lib/session";
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import WorkOrder from "../../../components/PDF/WorkOrder";
 import ProtectedPage from "../../../components/ProtectedPage";
+import Breadcrumbs from "../../../components/Breadcrumbs";
 
 export default function CreateTicket() {
     const {session} = useContext(SessionContext)
@@ -59,10 +60,10 @@ export default function CreateTicket() {
                 return;
             }
             if(data) {
-                data.map(item => {
+                data.forEach(item => {
                     arr2.push(item.id)
                 })
-                if(data.length != arr2.length) return;
+                if(data.length !== arr2.length) return;
                 setTicketArr(arr2)
                 setLastTicketId(null)
                 return;
@@ -81,9 +82,10 @@ export default function CreateTicket() {
         )
     }
     return (
-        <div className="page" style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white'}}>
+        <div className="page">
+            <Breadcrumbs />
             <h3>create new tickets</h3>
-            <form>
+            <form style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white', marginBottom: '1rem'}}>
                 <label htmlFor="woQuanity">Enter Quanity Needed: </label>
                 <input type="number" htmlFor="woQuanity" id="woQuanity" onChange={(e) => setQuanity(e.target.value)}/>
                 <p>Select Fuel Shop Location: </p>
@@ -99,14 +101,15 @@ export default function CreateTicket() {
                 <button type="button" onClick={handleSubmit}>Submit</button>
             </form>
             {ticketArr && (
-                <>
+                <div style={{
+                    boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white', marginBottom: '1rem'}
+                }>
                     <PDFDownloadLink document={<WorkOrder codes={ticketArr} location={location}/>} fileName={`"fuel-shop-repair-order-forms | ${((new Date()).toISOString()).toLocaleString('en-US')}.pdf`}>
                         {({ blob, url, loading, error }) =>
                             loading ? 'Loading document...' : 'Download now!'
                         }
                     </PDFDownloadLink>
-                    <button>Reset</button>
-                </>
+                </div>
             )}
         </div>
     )

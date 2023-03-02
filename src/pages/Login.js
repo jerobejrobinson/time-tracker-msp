@@ -1,16 +1,15 @@
 import supabase from '../config/supabaseClient';
-import { useState, useContext} from 'react';
-import SessionContext from '../lib/session';
+import { useState} from 'react';
 
 export default function Login() {
-    const {session} = useContext(SessionContext);
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
+
     const handleLogin = async (e) => {
         e.preventDefault()
         console.log(password)
         console.log(email)
-        const {data, error } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
             email: email,
             password: password,
         })
