@@ -33,6 +33,12 @@ export default function CustomerInformation() {
         }
         getData()
     }, [])
+
+    const handleAddCustomer = async () => {
+        
+        const {data: customer, error} = await supabase.from('customers').insert
+    }
+
     if(customer) return (
         <div style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white', width: '100%'}}>
             <p>Name: {customer.name}</p>

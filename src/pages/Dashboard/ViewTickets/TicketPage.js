@@ -4,12 +4,14 @@ import supabase from "../../../config/supabaseClient";
 import SessionContext from "../../../lib/session";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faX, faCaretDown, faListCheck, faAddressCard, faFileInvoice, faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { faX, faCaretDown, faListCheck, faAddressCard, faFileInvoice, faCartPlus, faDownload } from "@fortawesome/free-solid-svg-icons";
 import TaskList from "../../../components/TicketPage/TaskList";
 import CustomerInformation from "../../../components/TicketPage/CustomerInformation";
 import PartsOrdered from "../../../components/TicketPage/PartOrdered";
 import Billing from "../../../components/TicketPage/Billing";
 import ProtectedPage from "../../../components/ProtectedPage";
+import { PDFDownloadLink, } from "@react-pdf/renderer";
+import WorkOrder from "../../../components/PDF/WorkOrder";
 
 import './styles.css'
 import Breadcrumbs from "../../../components/Breadcrumbs";
@@ -19,6 +21,7 @@ export default function TicketPage() {
     const { id } = useParams()
     const [ticket, setTicket] = useState(null)
     const [errors, setErrors] = useState(null)
+    const [handleDownload, setHandleDownload] = useState(false)
 
     const taskContainer = useRef(null)
     const [displayTask, setDisplayTask] = useState(false)
@@ -47,6 +50,10 @@ export default function TicketPage() {
         }
         getData();
     }, [id])
+
+    useEffect(() => {
+
+    }, [])
     if(!session) {
         return (
             <ProtectedPage />
@@ -60,9 +67,58 @@ export default function TicketPage() {
     if(errors) return <div className="page"><h3>Error</h3>{errors.message}</div>
     if(!ticket) return <div className="page">Loading...</div>
     return (
-        <div className="page">
-            <Breadcrumbs />
-            <div className="module">
+        <div className="page" style={{overflowX: 'hidden'}}>
+            <div style={{display: 'flex', justifyContent: "space-between", flexWrap: 'wrap', position: 'relative'}}>
+                <Breadcrumbs />
+                <button 
+                    className="btn-red" 
+                    style={{marginBottom: '1rem', fontWeight: '500', letterSpacing: '3px'}}
+                    onClick={() => {
+                        setHandleDownload(prev => !prev)
+                    }}
+                >
+                    <FontAwesomeIcon icon={faDownload} />
+                </button>
+                <div 
+                    style={{
+                        flexBasis: '100%', 
+                        textAlign: 'right',
+                        marginBottom: '1rem',
+                        boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", 
+                        padding: '1rem', 
+                        background: 'white',
+                        width: '20%',
+                        position: 'absolute',
+                        right: handleDownload ? '80px' : '-700px',
+                        top: '-15px',
+                        transition: 'all .5s',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}
+                >
+                    {handleDownload && (
+                        <PDFDownloadLink 
+                            document={
+                                <WorkOrder 
+                                    codes={[id]} 
+                                    location={ticket.warehouse} 
+                                    id={ticket.id}
+                                />
+                            } 
+                            fileName={`"fuel-shop-repair-order-form | ${((new Date()).toISOString()).toLocaleString('en-US')}.pdf`}
+                            style={{color: 'var(--primary)'}}
+                        >
+                            {({ blob, url, loading, error }) =>
+                                loading ? 'Loading document...' : 'Download'
+                            }
+                        </PDFDownloadLink>
+                    )}
+                    <FontAwesomeIcon icon={faX} style={{color: 'var(--primary)', cursor: 'pointer'}} onClick={() => setHandleDownload(prev => !prev)}/>
+                </div>
+            </div>
+            <div className="module" style={{flexWrap: 'wrap'}}>
+                {/*  */}
                 <p style={{fontWeight: 700}}>Ticket Number: {ticket.number}</p>
                 <p>Part Number: {ticket.part_number}</p>
                 <p>Warehouse: {ticket.warehouse}</p>

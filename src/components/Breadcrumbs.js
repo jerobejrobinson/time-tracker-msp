@@ -25,7 +25,7 @@ export default function Breadcrumbs() {
                 return (
                     <>
                         <Link to={`/${prev.join('')}${str}`} key={i}>
-                            <button>{str}</button>
+                            <button>{str.includes("-") ? str.split("-").join(" ") : str}</button>
                         </Link>
                         <div style={{margin: '0 .5rem 0 .5rem'}}>
                             {arr.length - 1 === i ? "" : ">"}
