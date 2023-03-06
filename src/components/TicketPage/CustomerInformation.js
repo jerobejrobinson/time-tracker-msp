@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import supabase from "../../config/supabaseClient"
+import states from "../../lib/harddata/usaStatesArray"
 
 export default function CustomerInformation() {
     const { id } = useParams()
@@ -34,9 +35,54 @@ export default function CustomerInformation() {
         getData()
     }, [])
 
-    const handleAddCustomer = async () => {
-        
-        const {data: customer, error} = await supabase.from('customers').insert
+    const handleAddCustomer = async (e) => {
+        e.preventDefault()
+        const [name, phone, address, city, state, zip, cell, csd_account_number] = e.target
+        console.log(name)
+        const {data: customer, error} = await supabase.from('customers').insert({
+            name: name.value,
+            phone: phone.value,
+            address: address.value,
+            city: city.value,
+            state: state.value,
+            zip: zip.value,
+            cell: cell.value,
+            csd_account_number: csd_account_number.value
+        }).select().single()
+
+        if(error) {
+            console.log(error.message)
+            return;
+        }
+
+        if(customer) {
+            const { data: res, error } = await supabase
+                .from('tickets')
+                .update({customer_id: customer.id})
+                .eq('id', id)
+                .select(`
+                    customers (
+                        name,
+                        address,
+                        phone,
+                        city,
+                        state,
+                        zip,
+                        cell,
+                        csd_account_number
+                    )
+                `)
+                .single()
+            
+            if(error) {
+                console.log(error.message)
+                return;
+            }
+            if(res) {
+                setCustomer(res.customers)
+                return;
+            } 
+        }
     }
 
     if(customer) return (
@@ -51,7 +97,7 @@ export default function CustomerInformation() {
         </div>
     )
     return (
-        <div id="customer-information-form" style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white'}}>
+        <form id="customer-information-form" style={{boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)", padding: '1rem', background: 'white'}} onSubmit={handleAddCustomer}>
             <div id="cNameContainer">
                 <label htmlFor="cName">Name: </label><br />
                 <input type="text" name="cName" id="cName" />
@@ -71,8 +117,7 @@ export default function CustomerInformation() {
             <div id="cStateContainer">
                 <label htmlFor="cState">State: </label><br />
                 <select name="cState" id="cState">
-                    <option value="MS">Mississippii</option>
-                    <option value="TN">Tennessee</option>
+                    {states.map((state, index) => <option key={`${state[0]}${index}`} value={state[1]}>{state[0]}</option>) }
                 </select>
             </div>
             <div id="cZipContainer">
@@ -87,9 +132,9 @@ export default function CustomerInformation() {
                 <label htmlFor="cCsd">CSD Account Number: </label><br />
                 <input type="text" name="cCsd" id="cCsd" />
             </div>
-            <button>
+            <button type="submit">
                 Add Customer To Ticket
             </button>
-        </div>
+        </form>
     )
 }
