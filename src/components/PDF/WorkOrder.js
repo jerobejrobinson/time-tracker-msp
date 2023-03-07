@@ -1,4 +1,5 @@
 import supabase from '../../config/supabaseClient';
+import getAllByTicket_id from '../../lib/querys/part_orders/getAllByTicket_id';
 import { useEffect, useState } from 'react';
 import { Document, Page, Image, Text} from '@react-pdf/renderer';
 
@@ -14,21 +15,6 @@ const WorkOrder = ({codes, location, id}) => {
     const [ partNumber, setPartNumber ] = useState(null)
     const [ orderedParts, setOrderedParts] = useState(null)
 
-    const getOrderedParts = async () => {
-        const { data, error } = await supabase
-        .from('part_orders')
-        .select()
-        .eq('ticket_id', id)
-        
-        if(error) {
-            console.log(error)
-            return;
-        }
-        if(data) {
-            setOrderedParts(data)
-            return;
-        }
-    }
     const getData = async () => {
         const { data: {customers, part_number}, errors } = await supabase.from('tickets').select(`
             part_number,
@@ -58,9 +44,9 @@ const WorkOrder = ({codes, location, id}) => {
     }
 
     useEffect(() => {
-        getOrderedParts()
+        getAllByTicket_id(id, setOrderedParts)
         getData()
-    }, [])
+    }, [id])
 
     return (
         <Document>

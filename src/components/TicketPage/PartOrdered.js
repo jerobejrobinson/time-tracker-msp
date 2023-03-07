@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import supabase from "../../config/supabaseClient"
+import deletePartOrderByid from "../../lib/querys/part_orders/deletePartOrderById"
+import getAllByTicket_id from "../../lib/querys/part_orders/getAllByTicket_id"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash, faPlusCircle } from "@fortawesome/free-solid-svg-icons"
@@ -10,20 +12,8 @@ export default function PartsOrdered() {
     const [partsOrdered, setPartsOrdered] = useState(null)
 
     useEffect(() => {
-        getData()
-    }, [])
-
-    const getData = async () => {
-        const { data, error } = await supabase.from('part_orders').select().eq('ticket_id', id)
-        if(error) {
-            console.log(error)
-            return
-        }
-        if(data) {
-            setPartsOrdered(data)
-            return
-        }
-    }
+        getAllByTicket_id(id, setPartsOrdered)
+    }, [id])
 
     const handleAddParts = async (e) => {
         e.preventDefault()
@@ -39,8 +29,7 @@ export default function PartsOrdered() {
             return
         }
         if(data) {
-            console.log(data)
-            getData()
+            getAllByTicket_id(id, setPartsOrdered)
             document.getElementById('poNumber').value = ""
             document.getElementById('poQty').value = ""
             document.getElementById('poDesc').value = ""
@@ -48,17 +37,15 @@ export default function PartsOrdered() {
         }
     }
     
-    const handleDeleteParts = async (id) => {
-        const { data, error } = await supabase
-        .from('part_orders')
-        .delete()
-        .eq('id', id).select()
+    const handleDeleteParts = async (part_id) => {
+        const { data, error } = await deletePartOrderByid(part_id)
         if(error) {
             console.log(error)
-            return
+            return;
         }
         if(data) {
-            getData()
+            getAllByTicket_id(id, setPartsOrdered)
+            return;
         }
     }
     return (
