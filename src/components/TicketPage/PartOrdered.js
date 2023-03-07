@@ -49,7 +49,6 @@ export default function PartsOrdered() {
     }
     
     const handleDeleteParts = async (id) => {
-      
         const { data, error } = await supabase
         .from('part_orders')
         .delete()
@@ -61,7 +60,6 @@ export default function PartsOrdered() {
         if(data) {
             getData()
         }
-
     }
     return (
         <div style={{width: '100%'}}>

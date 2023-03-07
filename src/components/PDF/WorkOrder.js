@@ -12,36 +12,53 @@ import { Document, Page, Image, Text} from '@react-pdf/renderer';
 const WorkOrder = ({codes, location, id}) => {
     const [ customer, setCustomer ] = useState(null)
     const [ partNumber, setPartNumber ] = useState(null)
+    const [ orderedParts, setOrderedParts] = useState(null)
+
+    const getOrderedParts = async () => {
+        const { data, error } = await supabase
+        .from('part_orders')
+        .select()
+        .eq('ticket_id', id)
+        
+        if(error) {
+            console.log(error)
+            return;
+        }
+        if(data) {
+            setOrderedParts(data)
+            return;
+        }
+    }
+    const getData = async () => {
+        const { data: {customers, part_number}, errors } = await supabase.from('tickets').select(`
+            part_number,
+            customers (
+                name,
+                address,
+                phone,
+                city,
+                state,
+                zip,
+                cell,
+                csd_account_number
+            )
+        `).eq('id', id).single();
+
+        if(errors) {
+            console.log(errors.message)
+            return
+        }
+        
+        if(customers) {
+            setCustomer({...customers})
+        }
+        if(part_number) {
+            setPartNumber(part_number)
+        }  
+    }
 
     useEffect(() => {
-        const getData = async () => {
-            const { data: {customers, part_number}, errors } = await supabase.from('tickets').select(`
-                part_number,
-                customers (
-                    name,
-                    address,
-                    phone,
-                    city,
-                    state,
-                    zip,
-                    cell,
-                    csd_account_number
-                )
-            `).eq('id', id).single();
-
-            if(errors) {
-                console.log(errors.message)
-                return
-            }
-            
-            if(customers) {
-                setCustomer({...customers})
-            }
-            if(part_number) {
-                setPartNumber(part_number)
-            }
-            
-        }
+        getOrderedParts()
         getData()
     }, [])
 
@@ -81,6 +98,25 @@ const WorkOrder = ({codes, location, id}) => {
                             </Text>
                         </>
                     )}
+                    {orderedParts && orderedParts.map((part, i) => {
+                        const postion = 464 + (i * 40)
+                        return (
+                            <>
+                                <Text key={i + 1} style={{position: 'absolute', top: `${postion}px`, left: '56px', fontSize: '20px'}}>
+                                    {part.quanity}
+                                </Text>
+                                <Text key={i + 2} style={{position: 'absolute', top: `${postion}px`, left: '129px', fontSize: '20px'}}>
+                                    {part.part_number}
+                                </Text>
+                                <Text key={i + 3} style={{position: 'absolute', top: `${postion}px`, left: '330px', fontSize: '20px'}}>
+                                    {part.description}
+                                </Text>
+                                <Text key={i + 4} style={{position: 'absolute', top: `${postion}px`, left: '703px', fontSize: '20px'}}>
+                                    {part.amount}
+                                </Text>
+                            </>
+                        )
+                    })}
                 </Page>
             ))} 
         </Document>
