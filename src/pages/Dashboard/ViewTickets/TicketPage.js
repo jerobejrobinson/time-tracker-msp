@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import supabase from "../../../config/supabaseClient";
 import SessionContext from "../../../lib/session";
+import { useCookies } from 'react-cookie'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX, faCaretDown, faListCheck, faAddressCard, faFileInvoice, faCartPlus, faDownload } from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +18,8 @@ import './styles.css'
 import Breadcrumbs from "../../../components/Breadcrumbs";
 
 export default function TicketPage() {
+    const [cookies, setCookie] = useCookies(['access_token', 'refresh_token'])
+
     const {session} = useContext(SessionContext)
     const { id } = useParams()
     const [ticket, setTicket] = useState(null)
@@ -36,6 +39,18 @@ export default function TicketPage() {
     const [displayBilling, setDisplayBilling] = useState(false)
 
     useEffect(() => {
+        const checkCookies = async () => {
+            // will have to set up an express server that will be able to connect to the token url
+            fetch('http://localhost:5000/gabt')
+            .then(res => res.json())
+            .then(data => {
+                let expires = new Date()
+                expires.setTime(expires.getTime() + (data.expires_in * 1000))
+                setCookie('access_token', data.access_token, {path: '/', expires})
+                setCookie('refresh_token', data.refresh_token, {path: '/', expires})
+            })
+            console.log("cookies: ", cookies)
+        }
         const getData = async () => {
             const { data, error } = await supabase.from('tickets').select().eq('id', id).single()
             if(error) {
@@ -49,6 +64,8 @@ export default function TicketPage() {
             }
         }
         getData();
+        // checkCookies()
+        
     }, [id])
 
     useEffect(() => {

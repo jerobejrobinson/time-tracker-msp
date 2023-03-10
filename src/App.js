@@ -14,27 +14,30 @@ import SignUp from "./pages/SignUp"
 import CreateTicket from "./pages/Dashboard/CreateTicket"
 import ViewTickets from "./pages/Dashboard/ViewTickets"
 import TicketPage from "./pages/Dashboard/ViewTickets/TicketPage"
+import { CookiesProvider } from "react-cookie"
 
 function App() {
   return (
-    <BrowserRouter>
-      <SessionProvider>
-        <Navigation />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/start-task" element={<StartTask />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/dashboard/add-new-tech" element={<AddNewUser />} />
-          <Route path="/dashboard/view-techs" element={<ViewUsers />} />
-          <Route path="/dashboard/view-techs/:id" element={<UserPage />} />
-          <Route path="/dashboard/new-tickets" element={<CreateTicket />} />
-          <Route path="/dashboard/view-tickets" element={<ViewTickets />} />
-          <Route path="/dashboard/view-tickets/:id" element={<TicketPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
-      </SessionProvider>
-    </BrowserRouter>
+    <CookiesProvider>
+      <BrowserRouter>
+        <SessionProvider>
+          <Navigation />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/start-task" element={<StartTask />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/add-new-tech" element={<AddNewUser />} />
+            <Route path="/dashboard/view-techs" element={<ViewUsers />} />
+            <Route path="/dashboard/view-techs/:id" element={<UserPage />} />
+            <Route path="/dashboard/new-tickets" element={<CreateTicket />} />
+            <Route path="/dashboard/view-tickets" element={<ViewTickets />} />
+            <Route path="/dashboard/view-tickets/:id" element={<TicketPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </SessionProvider>
+      </BrowserRouter>
+    </CookiesProvider>
   );
 }
 

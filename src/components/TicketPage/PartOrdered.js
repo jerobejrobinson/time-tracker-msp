@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { json, useParams } from "react-router-dom"
 import supabase from "../../config/supabaseClient"
 import deletePartOrderByid from "../../lib/querys/part_orders/deletePartOrderById"
 import getAllByTicket_id from "../../lib/querys/part_orders/getAllByTicket_id"
-
+import { useCookies } from 'react-cookie'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash, faPlusCircle } from "@fortawesome/free-solid-svg-icons"
 
 export default function PartsOrdered() {
+    const [cookies, setCookie] = useCookies(['access_token', 'refresh_token'])
     const {id} = useParams()
     const [partsOrdered, setPartsOrdered] = useState(null)
 
@@ -23,6 +24,15 @@ export default function PartsOrdered() {
         const amount = document.getElementById('poCost').value
 
         if(!part_number || !quanity || !description || !amount) return;
+        const res = await fetch('http://localhost:5000/api/getproductpricing?' + new URLSearchParams({
+            product: part_number
+        }), {
+            method: 'GET',
+            headers: {
+                "Authorization": "Bearer " + cookies.access_token
+            }
+        }).then(res => res.json()).then(data => data)
+        console.log(res)
         const { data, error } = await supabase.from('part_orders').insert([{ ticket_id: id, quanity, part_number, amount, description  }]).select()
         if(error) {
             console.log(error)
