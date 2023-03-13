@@ -64,7 +64,7 @@ export default function TicketPage() {
             }
         }
         getData();
-        // checkCookies()
+        checkCookies()
         
     }, [id])
 

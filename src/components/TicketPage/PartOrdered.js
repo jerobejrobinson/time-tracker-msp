@@ -21,18 +21,21 @@ export default function PartsOrdered() {
         const part_number = document.getElementById('poNumber').value
         const quanity = document.getElementById('poQty').value
         const description = document.getElementById('poDesc').value
-        const amount = document.getElementById('poCost').value
 
-        if(!part_number || !quanity || !description || !amount) return;
-        const res = await fetch('http://localhost:5000/api/getproductpricing?' + new URLSearchParams({
-            product: part_number
+        if(!part_number || !quanity ) return;
+        const { response } = await fetch('http://localhost:5000/api/getproductpricing?' + new URLSearchParams({
+            product: part_number,
+            quantity: quanity
         }), {
             method: 'GET',
             headers: {
                 "Authorization": "Bearer " + cookies.access_token
             }
         }).then(res => res.json()).then(data => data)
-        console.log(res)
+        console.log(response)
+        if(response?.basePrice === 0) return;
+        const amount = Math.floor(response?.price * response?.stockingQuantityOrdered)
+
         const { data, error } = await supabase.from('part_orders').insert([{ ticket_id: id, quanity, part_number, amount, description  }]).select()
         if(error) {
             console.log(error)
@@ -42,8 +45,7 @@ export default function PartsOrdered() {
             getAllByTicket_id(id, setPartsOrdered)
             document.getElementById('poNumber').value = ""
             document.getElementById('poQty').value = ""
-            document.getElementById('poDesc').value = ""
-            document.getElementById('poCost').value = ""
+            document.getElementById('poDesc').value =" "
         }
     }
     
@@ -65,12 +67,12 @@ export default function PartsOrdered() {
                 <label htmlFor="poQty">Quanity: </label>
                 <label htmlFor="poNumber">Part Number: </label>
                 <label htmlFor="poDesc">Description: </label>
-                <label htmlFor="poCost">Amount: </label>
+                <p></p>
                 <p></p>
                 <input type="text" name="poQty" id="poQty"/>
                 <input type="text" name="poNumber" id="poNumber" />
                 <input type="text" name="poDesc" id="poDesc" />
-                <input type="text" name="poCost" id="poCost" />
+                <p></p>
                 <p onClick={handleAddParts} style={{cursor: 'pointer', color: 'var(--primary)', textAlign: 'center'}}><FontAwesomeIcon icon={faPlusCircle} /></p>
             </div>
             <p>Parts Ordered</p>
